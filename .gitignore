@@ -1,3 +1,6 @@
 *.o
 *.a
 *.so
+*.elf
+*.mot
+kzload
