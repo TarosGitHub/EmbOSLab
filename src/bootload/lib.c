@@ -2,91 +2,117 @@
 #include "serial.h"
 #include "lib.h"
 
-void *memset(void *b, int c, long len)
+#define PUTXVAL_BUF_SIZE 9
+
+void* memset(void* s, int c, size_t n)
 {
-  char *p;
-  for (p = b; len > 0; len--)
-    *(p++) = c;
-  return b;
+    char *p;
+
+    for (p = s; 0 < n; n--) {
+        *p = c;
+        p++;
+    }
+
+    return s;
 }
 
-void *memcpy(void *dst, const void *src, long len)
+void* memcpy(void* dst, const void* src, size_t n)
 {
-  char *d = dst;
-  const char *s = src;
-  for (; len > 0; len--)
-    *(d++) = *(s++);
-  return dst;
+    char* d = dst;
+    const char* s = src;
+
+    for (; 0 < n; n--) {
+        *d = *s;
+        d++;
+        s++;
+    }
+
+    return dst;
 }
 
-int memcmp(const void *b1, const void *b2, long len)
+int memcmp(const void* s1, const void* s2, size_t n)
 {
-  const char *p1 = b1, *p2 = b2;
-  for (; len > 0; len--) {
-    if (*p1 != *p2)
-      return (*p1 > *p2) ? 1 : -1;
-    p1++;
-    p2++;
-  }
-  return 0;
+    const char* p1 = s1;
+    const char* p2 = s2;
+
+    for (; 0 < n; n--) {
+        if (*p1 != *p2) {
+            return (*p1 > *p2) ? 1 : -1;
+        }
+        p1++;
+        p2++;
+    }
+    
+    return 0;
 }
 
-int strlen(const char *s)
+size_t strlen(const char* s)
 {
-  int len;
-  for (len = 0; *s; s++, len++)
-    ;
-  return len;
+    int len = 0;
+
+    while (*s) {
+        s++;
+        len++;
+    }
+
+    return len;
 }
 
-char *strcpy(char *dst, const char *src)
+char* strcpy(char* dst, const char* src)
 {
-  char *d = dst;
-  for (;; dst++, src++) {
+    char* d = dst;
+
     *dst = *src;
-    if (!*src) break;
-  }
-  return d;
+    while (*src) {
+        dst++;
+        src++;
+        *dst = *src;
+    }
+
+    return d;
 }
 
-int strcmp(const char *s1, const char *s2)
+int strcmp(const char* s1, const char* s2)
 {
-  while (*s1 || *s2) {
-    if (*s1 != *s2)
-      return (*s1 > *s2) ? 1 : -1;
-    s1++;
-    s2++;
-  }
-  return 0;
+    while (*s1 || *s2) {
+        if (*s1 != *s2) {
+            return (*s1 > *s2) ? 1 : -1;
+        }
+        s1++;
+        s2++;
+    }
+    
+    return 0;
 }
 
-int strncmp(const char *s1, const char *s2, int len)
+int strncmp(const char* s1, const char* s2, size_t n)
 {
-  while ((*s1 || *s2) && (len > 0)) {
-    if (*s1 != *s2)
-      return (*s1 > *s2) ? 1 : -1;
-    s1++;
-    s2++;
-    len--;
-  }
-  return 0;
+    while ((*s1 || *s2) && (0 < n)) {
+        if (*s1 != *s2) {
+            return (*s1 > *s2) ? 1 : -1;
+        }
+        s1++;
+        s2++;
+        n--;
+    }
+
+    return 0;
 }
 
-/* 1文字送信 */
-int putc(unsigned char c)
+int putchar(char c)
 {
     if (c == '\n') {
         serial_send_byte(SERIAL_DEFAULT_DEVICE, '\r');
     }
+
     return serial_send_byte(SERIAL_DEFAULT_DEVICE, c);
 }
 
-/* 文字列送信 */
-int puts(unsigned char* str)
+int puts(const char* s)
 {
-    while (*str) {
-        putc(*str);
-        str++;
+    while (*s) {
+        putchar(*s);
+        s++;
     }
 
     return 0;
@@ -94,22 +120,33 @@ int puts(unsigned char* str)
 
 int putxval(unsigned long value, int column)
 {
-  char buf[9];
-  char *p;
+    char buf[PUTXVAL_BUF_SIZE];
+    char *p;
 
-  p = buf + sizeof(buf) - 1;
-  *(p--) = '\0';
+    /* ポインタpをバッファの末尾に設定する */
+    p = &(buf[PUTXVAL_BUF_SIZE - 1]);
 
-  if (!value && !column)
-    column++;
+    /* バッファの末尾に'\0'を書き込む */
+    *p = '\0';
+    p--;
 
-  while (value || column) {
-    *(p--) = "0123456789abcdef"[value & 0xf];
-    value >>= 4;
-    if (column) column--;
-  }
+    /* valueが0かつcolumnが0の場合、columnを1にする */
+    if (!value && !column) {
+        column++;
+    }
 
-  puts(p + 1);
+    /* 16進数をバッファに書き込む */
+    while (value || column) {
+        *p = "0123456789abcdef"[value & 0xf];
+        p--;
+        value >>= 4;
+        if (column) {
+            column--;
+        }
+    }
 
-  return 0;
+    /* 16進数を表示する */
+    puts(p + 1);
+
+    return 0;
 }
