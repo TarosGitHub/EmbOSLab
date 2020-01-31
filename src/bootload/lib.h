@@ -1,20 +1,24 @@
 #ifndef LIB_H_INCLUDED
 #define LIB_H_INCLUDED
 
-void *memset(void *b, int c, long len);
-void *memcpy(void *dst, const void *src, long len);
-int memcmp(const void *b1, const void *b2, long len);
-int strlen(const char *s);
-char *strcpy(char *dst, const char *src);
-int strcmp(const char *s1, const char *s2);
-int strncmp(const char *s1, const char *s2, int len);
+/* 標準Cライブラリ */
+extern void* memset(void* s, int c, size_t n);
+extern void* memcpy(void* dst, const void* src, size_t n);
+extern int memcmp(const void* b1, const void* b2, size_t n);
+extern size_t strlen(const char* s);
+extern char* strcpy(char* dst, const char* src);
+extern int strcmp(const char* s1, const char* s2);
+extern int strncmp(const char* s1, const char* s2, size_t n);
+extern int putchar(char c);
+extern int puts(const char* s);
 
-/* 1文字送信 */
-extern int putc(unsigned char c);
-
-/* 文字列送信 */
-extern int puts(unsigned char* str);
-
-int putxval(unsigned long value, int column);
+/**
+ * 数値を16進数で表示する.
+ *
+ * @param value 数値
+ * @param column 表示桁数. 0の場合はvalueの値を最上位桁まで表示する.
+ * @return 常に0を返す
+ */
+extern int putxval(unsigned long value, int column);
 
 #endif
