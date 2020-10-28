@@ -13,6 +13,7 @@ static int init(void)
     /* Initialize BSS SECTION to 0 */
     memset(&bss_start, 0, (long)&ebss - (long)&bss_start);
 
+    /* SCIの初期化 */
     serial_init(SERIAL_DEFAULT_DEVICE);
 
     return 0;

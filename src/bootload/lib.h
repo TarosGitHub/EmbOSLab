@@ -18,8 +18,8 @@ extern int gets(unsigned char* buf);
  * 数値を16進数で表示する.
  *
  * @param value 数値
- * @param column 表示桁数. 0の場合はvalueの値を最上位桁まで表示する.
- * @return 常に0を返す
+ * @param column 表示桁数. 0の場合はvalueの値を最上位桁まで表示する
+ * @return 常に0を返す.
  */
 extern int putxval(unsigned long value, int column);
 

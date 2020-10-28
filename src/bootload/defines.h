@@ -3,6 +3,7 @@
 
 #define NULL ((void*)0)
 
+/* デフォルトで使用するSCIチャネル番号 */
 #define SERIAL_DEFAULT_DEVICE 1
 
 typedef char int8;

@@ -1,7 +1,7 @@
 #include "defines.h"
 #include "serial.h"
 
-/* SCIの数 */
+/* SCIのチャネル数 */
 #define SERIAL_SCI_NUM 3
 
 /* SCIの定義 */
@@ -60,7 +60,6 @@ static struct {
     {H8_3069F_SCI2}
 };
 
-/* デバイス初期化 */
 int serial_init(int index)
 {
     volatile struct h8_3069f_sci* sci = regs[index].sci;
@@ -74,14 +73,13 @@ int serial_init(int index)
     return 0;
 }
 
-/* 送信可能か？ */
 int serial_is_send_enable(int index)
 {
     volatile struct h8_3069f_sci* sci = regs[index].sci;
+
     return (sci->ssr & H8_3069F_SCI_SSR_TDRE);
 }
 
-/* 1文字送信 */
 int serial_send_byte(int index, unsigned char c)
 {
     volatile struct h8_3069f_sci* sci = regs[index].sci;
@@ -100,7 +98,6 @@ int serial_send_byte(int index, unsigned char c)
     return 0;
 }
 
-/* 受信可能か？ */
 int serial_is_recv_enable(int index)
 {
     volatile struct h8_3069f_sci* sci = regs[index].sci;
@@ -108,7 +105,6 @@ int serial_is_recv_enable(int index)
     return (sci->ssr & H8_3069F_SCI_SSR_RDRF);
 }
 
-/* 1文字受信 */
 unsigned char serial_recv_byte(int index)
 {
     volatile struct h8_3069f_sci* sci = regs[index].sci;
@@ -119,7 +115,10 @@ unsigned char serial_recv_byte(int index)
         /* DO NOTHING */
     }
 
+    /* 受信した文字を取得 */
     c = sci->rdr;
+
+    /* 受信完了 */
     sci->ssr &= ~H8_3069F_SCI_SSR_RDRF;
 
     return c;
