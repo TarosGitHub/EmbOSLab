@@ -11,6 +11,8 @@ extern int strcmp(const char* s1, const char* s2);
 extern int strncmp(const char* s1, const char* s2, size_t n);
 extern int putchar(char c);
 extern int puts(const char* s);
+extern unsigned char getchar(void);
+extern int gets(unsigned char* buf);
 
 /**
  * 数値を16進数で表示する.

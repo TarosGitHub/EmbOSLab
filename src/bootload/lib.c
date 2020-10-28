@@ -118,6 +118,33 @@ int puts(const char* s)
     return 0;
 }
 
+unsigned char getchar(void)
+{
+    unsigned char c = serial_recv_byte(SERIAL_DEFAULT_DEVICE);
+    c = (c == '\r') ? '\n' : c;
+    
+    /* echo back */
+    putchar(c);
+
+    return c;
+}
+
+int gets(unsigned char* buf)
+{
+    int i = 0;
+    unsigned char c;
+
+    do {
+        c = getchar();
+        if (c == '\n') {
+            c = '\0';
+        }
+        buf[i++] = c;
+    } while (c);
+
+    return i - 1;
+}
+
 int putxval(unsigned long value, int column)
 {
     char buf[PUTXVAL_BUF_SIZE];
