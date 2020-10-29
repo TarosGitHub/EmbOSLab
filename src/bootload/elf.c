@@ -128,37 +128,25 @@ static int elf_load_program(struct elf_header* header)
             continue;
         }
 
-        /* セグメント情報の表示 */
-        putxval(phdr->offset, 6);
-        puts(" ");
-        putxval(phdr->virtual_addr, 8);
-        puts(" ");
-        putxval(phdr->physical_addr, 8);
-        puts(" ");
-        putxval(phdr->file_size, 5);
-        puts(" ");
-        putxval(phdr->memory_size, 5);
-        puts(" ");
-        putxval(phdr->flags, 2);
-        puts(" ");
-        putxval(phdr->align, 2);
-        puts("\n");
+        /* セグメントをメモリ上に展開 */
+        memcpy((char*)phdr->physical_addr, (char*)header + phdr->offset, phdr->file_size);
+        memset((char*)phdr->physical_addr + phdr->file_size, 0, phdr->memory_size - phdr->file_size);
     }
 
     return 0;
 }
 
-int elf_load(char* buf)
+EntryPoint elf_load(char* buf)
 {
     struct elf_header* header = (struct elf_header*)buf;
 
     if (elf_check(header) < 0) {
-        return -1;
+        return (EntryPoint)NULL;
     }
 
     if (elf_load_program(header) < 0) {
-        return -1;
+        return (EntryPoint)NULL;
     }
 
-    return 0;
+    return (EntryPoint)header->entry_point;
 }

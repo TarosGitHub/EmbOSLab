@@ -95,7 +95,18 @@ int main(void)
         }
         else if (!strcmp(command, "run")) {
             /* run コマンドの実行 */
-            elf_load(loadbuf);
+            EntryPoint entry_point = elf_load(loadbuf);
+
+            if (!entry_point) {
+                puts("run error!\n");
+            }
+            else {
+                puts("starting from entry point: ");
+                putxval((unsigned long)entry_point, 0);
+                puts("\n");
+                entry_point();
+                /* WON'T COME BACK HERE */
+            }
         }
         else {
             puts("unknown.\n");
