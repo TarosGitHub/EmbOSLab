@@ -7,10 +7,10 @@ static int init(void)
 {
     extern int erodata, data_start, erodata, edata, bss_start, ebss;
 
-    /* Copy DATA SECTION's data from ROM to RAM */
+    /* データセクションの内容を ROM から RAM へコピーする */
     memcpy(&data_start, &erodata, (long)&edata - (long)&data_start);
 
-    /* Initialize BSS SECTION to 0 */
+    /* BSS領域を0に初期化する */
     memset(&bss_start, 0, (long)&ebss - (long)&bss_start);
 
     /* SCIの初期化 */
