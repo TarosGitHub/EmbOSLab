@@ -4,14 +4,10 @@ OBJS = startup.o main.o
 
 TARGET = kozos
 
-CFLAGS = -Wall -mh -nostdinc -nostdlib -fno-builtin
-#CFLAGS += -mint32 # intを32ビットにすると掛算／割算ができなくなる
 CFLAGS += -I. -I../lib -I../driver
-#CFLAGS += -g
-CFLAGS += -Os
 CFLAGS += -DKOZOS
 
-LFLAGS = -static -T ld.scr -L. -L../lib -lkzlib -L../driver -lkzdriver
+LFLAGS += -T ld.scr -L. -L../lib -lkzlib -L../driver -lkzdriver
 
 .SUFFIXES: .c .o
 .SUFFIXES: .s .o

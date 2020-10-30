@@ -4,13 +4,7 @@ OBJS = lib.o
 
 TARGET = libkzlib.a
 
-CFLAGS = -Wall -mh -nostdinc -nostdlib -fno-builtin
-#CFLAGS += -mint32 # intを32ビットにすると掛算／割算ができなくなる
 CFLAGS += -I. -I../driver
-#CFLAGS += -g
-CFLAGS += -Os
-
-ARFLAGS = r
 
 .SUFFIXES: .c .o
 

@@ -4,13 +4,7 @@ OBJS = serial.o
 
 TARGET = libkzdriver.a
 
-CFLAGS = -Wall -mh -nostdinc -nostdlib -fno-builtin
-#CFLAGS += -mint32 # intを32ビットにすると掛算／割算ができなくなる
 CFLAGS += -I. -I../lib
-#CFLAGS += -g
-CFLAGS += -Os
-
-ARFLAGS = r
 
 .SUFFIXES: .c .o
 

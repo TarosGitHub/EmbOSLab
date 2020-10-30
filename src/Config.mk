@@ -19,6 +19,15 @@ H8WRITE = ../../tools/h8write/h8write.exe
 # Linux:/dev/ttySx, Linux(USB):/dev/ttyUSBx, Windows:comX
 H8WRITE_SERDEV = com3
 
+CFLAGS = -Wall -mh -nostdinc -nostdlib -fno-builtin
+#CFLAGS += -mint32 # intを32ビットにすると掛算／割算ができなくなる
+#CFLAGS += -g
+CFLAGS += -Os
+
+LFLAGS = -static
+
+ARFLAGS = r
+
 export PREFIX
 export ARCH
 export BINDIR
@@ -34,3 +43,6 @@ export RANLIB
 export STRIP
 export H8WRITE
 export H8WRITE_SERDEV
+export CFLAGS
+export LFLAGS
+export ARFLAGS
