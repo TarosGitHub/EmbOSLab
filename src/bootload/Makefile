@@ -1,37 +1,17 @@
-PREFIX  = /usr/local
-ARCH    = h8300-elf
-BINDIR  = $(PREFIX)/bin
-ADDNAME = $(ARCH)-
+include ../Config.mk
 
-AR      = $(BINDIR)/$(ADDNAME)ar
-AS      = $(BINDIR)/$(ADDNAME)as
-CC      = $(BINDIR)/$(ADDNAME)gcc
-LD      = $(BINDIR)/$(ADDNAME)ld
-NM      = $(BINDIR)/$(ADDNAME)nm
-OBJCOPY = $(BINDIR)/$(ADDNAME)objcopy
-OBJDUMP = $(BINDIR)/$(ADDNAME)objdump
-RANLIB  = $(BINDIR)/$(ADDNAME)ranlib
-STRIP   = $(BINDIR)/$(ADDNAME)strip
-
-H8WRITE = ../../tools/h8write/h8write.exe
-
-# FreeBSD-4.x:/dev/cuaaX, FreeBSD-6.x:/dev/cuadX, FreeBSD(USB):/dev/cuaUx
-# Linux:/dev/ttySx, Linux(USB):/dev/ttyUSBx, Windows:comX
-H8WRITE_SERDEV = com3
-
-OBJS  = vector.o startup.o main.o
-OBJS += lib.o serial.o xmodem.o elf.o
+OBJS = vector.o startup.o main.o xmodem.o elf.o
 
 TARGET = kzload
 
 CFLAGS = -Wall -mh -nostdinc -nostdlib -fno-builtin
 #CFLAGS += -mint32 # intを32ビットにすると掛算／割算ができなくなる
-CFLAGS += -I.
+CFLAGS += -I. -I../lib -I../driver
 #CFLAGS += -g
 CFLAGS += -Os
 CFLAGS += -DKZLOAD
 
-LFLAGS = -static -T ld.scr -L.
+LFLAGS = -static -T ld.scr -L. -L../lib -lkzlib -L../driver -lkzdriver
 
 .SUFFIXES: .c .o
 .SUFFIXES: .s .o

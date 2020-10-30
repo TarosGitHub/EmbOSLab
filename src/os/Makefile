@@ -1,31 +1,17 @@
-PREFIX  = /usr/local
-ARCH    = h8300-elf
-BINDIR  = $(PREFIX)/bin
-ADDNAME = $(ARCH)-
+include ../Config.mk
 
-AR      = $(BINDIR)/$(ADDNAME)ar
-AS      = $(BINDIR)/$(ADDNAME)as
-CC      = $(BINDIR)/$(ADDNAME)gcc
-LD      = $(BINDIR)/$(ADDNAME)ld
-NM      = $(BINDIR)/$(ADDNAME)nm
-OBJCOPY = $(BINDIR)/$(ADDNAME)objcopy
-OBJDUMP = $(BINDIR)/$(ADDNAME)objdump
-RANLIB  = $(BINDIR)/$(ADDNAME)ranlib
-STRIP   = $(BINDIR)/$(ADDNAME)strip
-
-OBJS  = startup.o main.o
-OBJS += lib.o serial.o
+OBJS = startup.o main.o
 
 TARGET = kozos
 
 CFLAGS = -Wall -mh -nostdinc -nostdlib -fno-builtin
 #CFLAGS += -mint32 # intを32ビットにすると掛算／割算ができなくなる
-CFLAGS += -I.
+CFLAGS += -I. -I../lib -I../driver
 #CFLAGS += -g
 CFLAGS += -Os
 CFLAGS += -DKOZOS
 
-LFLAGS = -static -T ld.scr -L.
+LFLAGS = -static -T ld.scr -L. -L../lib -lkzlib -L../driver -lkzdriver
 
 .SUFFIXES: .c .o
 .SUFFIXES: .s .o
