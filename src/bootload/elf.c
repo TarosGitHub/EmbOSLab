@@ -47,7 +47,7 @@ struct elf_program_header {
  * @param index プログラムヘッダのインデックス
  * @return プログラムヘッダへのポインタ.
  */
-#define get_program_header(elf_header, index) ((char*)(elf_header) + (elf_header)->program_header_offset + (elf_header)->program_header_size * (index))
+#define get_program_header(elf_header, index) ((struct elf_program_header*)((char*)(elf_header) + (elf_header)->program_header_offset + (elf_header)->program_header_size * (index)))
 
 /**
  * @brief セグメントがロード可能かどうか判定する.
