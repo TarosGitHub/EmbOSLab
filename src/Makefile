@@ -7,6 +7,9 @@ TARGET_REQ = lib driver
 
 all : $(TARGET)
 
+debug :
+	make all "BUILD_MODE = -g"
+
 $(TARGET) : $(TARGET_REQ)
 	make --directory=$@
 

@@ -10,6 +10,9 @@ CFLAGS += -I. -I../lib
 
 all : $(TARGET)
 
+debug :
+	make all "BUILD_MODE = -g"
+
 $(TARGET) :	$(OBJS)
 	$(AR) $(ARFLAGS) $(TARGET) $(OBJS)
 

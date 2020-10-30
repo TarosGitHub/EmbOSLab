@@ -14,6 +14,9 @@ LFLAGS += -T ld.scr -L. -L../lib -lkzlib -L../driver -lkzdriver
 
 all : $(TARGET)
 
+debug :
+	make all "BUILD_MODE = -g"
+
 $(TARGET) :	$(OBJS)
 	$(CC) $(OBJS) -o $(TARGET) $(CFLAGS) $(LFLAGS)
 	cp $(TARGET) $(TARGET).elf
