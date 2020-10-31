@@ -1,6 +1,9 @@
 #ifndef SERIAL_H_INCLUDED
 #define SERIAL_H_INCLUDED
 
+/* デフォルトで使用するSCIチャネル番号 */
+#define SERIAL_DEFAULT_DEVICE 1
+
 /**
  * @brief SCIを初期化する.
  *        送信動作と受信動作を許可する. また、BRR を64に設定する.

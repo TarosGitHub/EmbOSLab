@@ -1,6 +1,6 @@
 #include "defines.h"
-#include "serial.h"
 #include "lib.h"
+#include "serial.h"
 
 #define PUTXVAL_BUF_SIZE 9
 
