@@ -1,6 +1,6 @@
 include ../Config.mk
 
-OBJS = vector.o startup.o main.o xmodem.o elf.o
+OBJS = vector.o startup.o intr.o main.o xmodem.o elf.o interrupt.o
 
 TARGET = kzload
 
@@ -11,6 +11,7 @@ LFLAGS += -T ld.scr -L. -L../lib -lkzlib -L../driver -lkzdriver
 
 .SUFFIXES: .c .o
 .SUFFIXES: .s .o
+.SUFFIXES: .S .o
 
 all : $(TARGET)
 
@@ -26,6 +27,9 @@ $(TARGET) :	$(OBJS)
 	$(CC) -c $(CFLAGS) $<
 
 .s.o : $<
+	$(CC) -c $(CFLAGS) $<
+
+.S.o : $<
 	$(CC) -c $(CFLAGS) $<
 
 $(TARGET).mot :	$(TARGET)

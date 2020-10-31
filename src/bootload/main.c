@@ -1,4 +1,5 @@
 #include "defines.h"
+#include "interrupt.h"
 #include "serial.h"
 #include "xmodem.h"
 #include "elf.h"
@@ -13,6 +14,9 @@ static int init(void)
 
     /* BSS領域を0に初期化する */
     memset(&bss_start, 0, (long)&ebss - (long)&bss_start);
+
+    /* ソフトウェア・割込みベクタを初期化する */
+    softvec_init();
 
     /* SCIの初期化 */
     serial_init(SERIAL_DEFAULT_DEVICE);
@@ -63,6 +67,8 @@ int main(void)
     static long size = -1;
     static unsigned char* loadbuf = NULL;
     extern int buffer_start;
+
+    INTR_DISABLE();
 
     init();
 
