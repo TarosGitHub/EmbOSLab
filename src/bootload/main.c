@@ -55,7 +55,7 @@ static int dump(char* buf, long size)
 static void wait()
 {
     volatile long i;
-    
+
     for (i = 0; i < 300000; i++) {
         /* NO NOTHING */
     }
@@ -101,7 +101,7 @@ int main(void)
         }
         else if (!strcmp(command, "run")) {
             /* run コマンドの実行 */
-            EntryPoint entry_point = elf_load(loadbuf);
+            entry_point_t entry_point = elf_load(loadbuf);
 
             if (!entry_point) {
                 puts("run error!\n");

@@ -42,7 +42,7 @@ struct elf_program_header {
 
 /**
  * @brief プログラムヘッダ取得.
- * 
+ *
  * @param elf_header ELFヘッダへのポインタ
  * @param index プログラムヘッダのインデックス
  * @return プログラムヘッダへのポインタ.
@@ -51,7 +51,7 @@ struct elf_program_header {
 
 /**
  * @brief セグメントがロード可能かどうか判定する.
- * 
+ *
  * @param program_header プログラムヘッダへのポインタ
  * @return ロード可能の場合、真(0以外). そうでない場合、偽(0)を返す.
  */
@@ -59,7 +59,7 @@ struct elf_program_header {
 
 /**
  * @brief ELFヘッダのチェック.
- * 
+ *
  * @param header ELFヘッダへのポインタ
  * @return 以下の場合、-1. そうでない場合、0.
  * - ELFファイルでない
@@ -112,7 +112,7 @@ static int elf_check(struct elf_header* header)
 
 /**
  * @brief セグメント単位でのロード.
- * 
+ *
  * @param header ELFヘッダへのポインタ
  * @return 常に0を返す.
  */
@@ -136,17 +136,17 @@ static int elf_load_program(struct elf_header* header)
     return 0;
 }
 
-EntryPoint elf_load(char* buf)
+entry_point_t elf_load(char* buf)
 {
     struct elf_header* header = (struct elf_header*)buf;
 
     if (elf_check(header) < 0) {
-        return (EntryPoint)NULL;
+        return (entry_point_t)NULL;
     }
 
     if (elf_load_program(header) < 0) {
-        return (EntryPoint)NULL;
+        return (entry_point_t)NULL;
     }
 
-    return (EntryPoint)header->entry_point;
+    return (entry_point_t)header->entry_point;
 }
