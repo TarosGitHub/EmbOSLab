@@ -3,5 +3,5 @@
 *.so
 *.elf
 *.mot
-kzload*
-kozos*
+kzload
+kozos

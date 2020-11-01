@@ -29,4 +29,4 @@ $(TARGET) :	$(OBJS)
 	$(CC) -c $(CFLAGS) $<
 
 clean :
-	rm -f *.o $(TARGET)*
+	rm -f *.o *.elf* *.mot $(TARGET)
