@@ -1,6 +1,6 @@
 include ../Config.mk
 
-OBJS = startup.o main.o interrupt.o
+OBJS = startup.o main.o interrupt.o kozos.o syscall.o test08_1.o
 
 TARGET = kozos
 

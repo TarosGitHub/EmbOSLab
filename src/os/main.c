@@ -1,35 +1,12 @@
 #include "defines.h"
-#include "intr.h"
+#include "syscall.h"
+#include "kozos.h"
 #include "interrupt.h"
-#include "serial.h"
 #include "lib.h"
 
-static void intr(softvec_type_t type, unsigned long sp)
+static int start_threads(int argc, char* argv[])
 {
-    int c;
-    static char command[32];
-    static int len;
-
-    c = getchar();
-
-    if (c != '\n') {
-        command[len++] = c;
-    }
-    else {
-        command[len++] = '\0';
-
-        if (!strncmp(command, "echo", 4)) {
-            /* echo コマンド実行 */
-            puts(command + 4);
-            puts("\n");
-        }
-        else {
-            puts("unknown\n");
-        }
-
-        puts("> ");
-        len = 0;
-    }
+    kz_run(test08_1_main, "command", 0x100, 0, NULL);
 }
 
 int main(void)
@@ -38,16 +15,8 @@ int main(void)
 
     puts("kozos boot succeed!\n");
 
-    softvec_setintr(SOFTVEC_TYPE_SERINTR, intr);
-    serial_intr_recv_enable(SERIAL_DEFAULT_DEVICE);
-
-    puts("> ");
-
-    INTR_ENABLE();
-
-    while (1) {
-        asm volatile ("sleep");
-    }
+    kz_start(start_threads, "start", 0x100, 0, NULL);
+    /* ここには返ってこない */
 
     return 0;
 }
