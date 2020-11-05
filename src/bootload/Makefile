@@ -41,4 +41,4 @@ write : $(TARGET).mot
 	$(H8WRITE) -3069 -f20 $(TARGET).mot $(H8WRITE_SERDEV)
 
 clean :
-	rm -f *.o *.elf* .mot $(TARGET)
+	rm -f *.o *.elf* *.mot $(TARGET)
